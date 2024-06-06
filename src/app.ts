@@ -74,13 +74,14 @@ app.get('/users/:id', (req: Request, res: Response) => {
   
 // update user information for given id 
 app.put('/users/:id', (req: Request, res: Response) => {
-    const user = users.find(u => u.id === parseInt(req.params.id));
+    let user = users.find(u => u.id === parseInt(req.params.id));
     if (user) {
-      const { username, password, email, fullname } = req.body;
-      if (username) user.username = username;
-      if (password) user.password = password;
-      if (email) user.email = email;
-      if (fullname) user.fullname = fullname;
+      user={...user,...req.body}
+      // const { username, password, email, fullname } = req.body;
+      // if (username) user.username = username;
+      // if (password) user.password = password;
+      // if (email) user.email = email;
+      // if (fullname) user.fullname = fullname;
       res.json(user);
     } else {
       res.send('User not found');
@@ -140,7 +141,7 @@ app.delete('/providers/:id', (req: Request, res: Response) => {
   });
   
 // User Subscription to Providers
-app.post('/users/:id/subscribe', (req: Request, res: Response) => {
+app.post('/users/:id/subscription', (req: Request, res: Response) => {
     const user = users.find(u => u.id === parseInt(req.params.id));
     const providerId = parseInt(req.body.providerId);
     if (user && providers.find(p => p.id === providerId)) {
@@ -186,7 +187,7 @@ app.post("/meters/:id/reading", (req: Request, res: Response) => {
   });
  
   // adding a meter
-  app.post('/users/:id/addMeter', (req: Request, res: Response) => {
+  app.post('/users/:id/meterSubscription', (req: Request, res: Response) => {
     const user = users.find(u => u.id === parseInt(req.params.id));
     const meterId = parseInt(req.body.meterId);
     if (user && meters.find(p => p.id === meterId)) {
